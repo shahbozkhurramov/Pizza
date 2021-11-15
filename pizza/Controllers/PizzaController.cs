@@ -11,7 +11,7 @@ using pizza.Services;
 namespace pizza.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class PizzaController: ControllerBase
     {
         private readonly ILogger<PizzaController> _logger;
@@ -22,6 +22,7 @@ namespace pizza.Controller
             _logger = logger;
             _pizzaStorage = pizzaStorage;
         }
+
         [HttpPost]
         [Consumes(System.Net.Mime.MediaTypeNames.Application.Json)]
         public async Task<IActionResult> CreatePizza([FromBody]NewPizza newPizza)
@@ -33,9 +34,10 @@ namespace pizza.Controller
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, new { message = insertResult.exception.Message });
             }
-            return CreatedAtAction("CreateTask", pizzaEntity);
+            return CreatedAtAction("CreatePizza", pizzaEntity);
 
         }
+
         [HttpGet]
         public async Task<IActionResult> QueryPizzas([FromQuery]PizzaQuery query)
         {
@@ -68,7 +70,7 @@ namespace pizza.Controller
         }
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdatePizzaAsync([FromRoute]Guid id, [FromBody]NewPizza updatedPizza)
+        public async Task<IActionResult> UpdatePizzaAsync([FromRoute]Guid id, [FromBody]UpdatedPizza updatedPizza)
         {
             var entity = updatedPizza.ToPizzaEntity();
             var updateResult = await _pizzaStorage.UpdatePizzaAsync(id, entity);

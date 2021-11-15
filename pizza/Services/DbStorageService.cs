@@ -35,7 +35,7 @@ namespace pizza.Services
                 }
                 else
                 {
-                    return (false, new Exception("Task does not exist!"));
+                    return (false, new Exception("Pizza does not exist!"));
                 }
             }
             catch(Exception e)
@@ -80,10 +80,8 @@ namespace pizza.Services
         {
             try
             {
-                var pizz = await _context.Pizzas
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == id);
-                if(pizz != default(Pizza))
+                
+                if(await _context.Pizzas.AnyAsync(t => t.Id == pizza.Id))
                 {
                     _context.Pizzas.Update(pizza);
                     await _context.SaveChangesAsync();
@@ -91,7 +89,7 @@ namespace pizza.Services
                 }
                 else
                 {
-                    return (false, new Exception("Task does not exist!"));
+                    return (false, new Exception("Pizza does not exist!"));
                 }
             }
             catch(Exception e)

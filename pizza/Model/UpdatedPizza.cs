@@ -7,6 +7,8 @@ namespace pizza.Model
     public class UpdatedPizza
     {
         [Required]
+        public Guid Id { get; set; }
+        [Required]
         [MaxLength(255)]
         public string Title { get; set; }
         [Required]
